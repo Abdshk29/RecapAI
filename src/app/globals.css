@@ -130,3 +130,45 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+
+/* Background Wallpaper & Professional UI Surface Utilities */
+body {
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/bg-light-mesh.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.dark body::before {
+  background-image: url('/bg-dark-mesh.png');
+  opacity: 0.85;
+}
+
+.bg-app-wallpaper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Professional card elevate & reduced transparency */
+.card-solid {
+  background-color: var(--card);
+  opacity: 0.96;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+.dark .card-solid {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+}

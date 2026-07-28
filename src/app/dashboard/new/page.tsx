@@ -9,8 +9,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/logo'
 import { toast } from 'sonner'
-import { ArrowLeft, FileText, Loader2, Sparkles, Upload } from 'lucide-react'
+import { ArrowLeft, FileText, Loader2, Upload } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewMeetingPage() {
@@ -140,10 +141,10 @@ export default function NewMeetingPage() {
       {/* Form Content */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-8 z-10">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Card className="border-border bg-card text-card-foreground shadow-md">
+          <Card className="border-border/80 bg-card/95 backdrop-blur-md text-card-foreground shadow-xl">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
+              <CardTitle className="text-2xl font-bold flex items-center gap-2.5">
+                <Logo iconOnly size="sm" />
                 Process meeting with AI
               </CardTitle>
               <CardDescription className="text-muted-foreground">
@@ -228,7 +229,7 @@ export default function NewMeetingPage() {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-4 w-4" />
+                    <Logo iconOnly size="sm" />
                     Extract Action Items with AI
                   </>
                 )}

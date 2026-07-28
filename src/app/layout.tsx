@@ -37,14 +37,26 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${jakartaSans.variable} ${interHeading.variable} ${monoFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans">
+      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans relative">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange={false}
         >
-          {children}
+          {/* Wallpaper Background Picture Layers (Realistic Meeting Scene) */}
+          <div 
+            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-center opacity-30 transition-opacity duration-300 dark:hidden"
+            style={{ backgroundImage: "url('/bg-light-meeting.png')" }}
+          />
+          <div 
+            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-center opacity-40 transition-opacity duration-300 hidden dark:block"
+            style={{ backgroundImage: "url('/bg-dark-meeting.png')" }}
+          />
+
+          <div className="relative z-10 flex-1 flex flex-col">
+            {children}
+          </div>
           <Toaster closeButton richColors position="top-right" />
         </ThemeProvider>
       </body>

@@ -9,8 +9,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/logo'
 import { toast } from 'sonner'
-import { Check, Database, Loader2, Lock, Mail, Sparkles } from 'lucide-react'
+import { Check, Database, Loader2, Lock, Mail } from 'lucide-react'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -60,7 +61,7 @@ export default function LoginPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !password) {
-      toast.error('Please enter both email and password.')
+      toast.error('Please enter email and password.')
       return
     }
 
@@ -71,16 +72,16 @@ export default function LoginPage() {
     }
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
+      setIsLoading(false)
       if (error) {
-        toast.error(error.message || 'Failed to sign in. Check credentials or try Demo Mode!')
-        setIsLoading(false)
+        toast.error(error.message || 'Invalid credentials.')
       } else {
-        toast.success('Successfully logged in! Redirecting...')
+        toast.success('Successfully logged in!')
         router.push('/dashboard')
         router.refresh()
       }
@@ -94,7 +95,7 @@ export default function LoginPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !password) {
-      toast.error('Please enter both email and password.')
+      toast.error('Please enter email and password.')
       return
     }
 
@@ -144,23 +145,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center px-4 relative overflow-hidden bg-background text-foreground min-h-screen">
+    <div className="flex-1 flex flex-col justify-center items-center px-4 relative overflow-hidden bg-transparent bg-app-wallpaper text-foreground min-h-screen z-10">
       {/* Top bar with ThemeToggle and Logo link */}
       <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 max-w-4xl mx-auto">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg tracking-tight text-foreground">
-          <div className="p-1 bg-primary rounded-md text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          RecapAI
+        <Link href="/">
+          <Logo size="sm" />
         </Link>
         <ThemeToggle />
       </div>
 
       <div className="w-full max-w-md space-y-6 z-10 my-12">
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-            RecapAI
-          </h1>
+        <div className="flex flex-col items-center text-center space-y-3">
+          <Logo size="lg" iconOnly />
           <p className="text-sm text-muted-foreground max-w-xs">
             Paste meeting transcripts, extract action items, and organize your team.
           </p>
@@ -184,7 +180,7 @@ export default function LoginPage() {
 
           <TabsContent value="signin" className="mt-4">
             <form onSubmit={handleSignIn}>
-              <Card className="border-border bg-card text-card-foreground shadow-md">
+              <Card className="border-border/80 bg-card/95 backdrop-blur-md text-card-foreground shadow-xl">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Welcome Back</CardTitle>
                   <CardDescription className="text-muted-foreground text-xs">

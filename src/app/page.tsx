@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/logo'
 import {
   ArrowRight,
   Calendar,
@@ -12,29 +13,23 @@ import {
   Kanban,
   ListTodo,
   ShieldAlert,
-  Sparkles,
   UploadCloud,
   User
 } from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground relative overflow-hidden min-h-screen">
+    <div className="flex-1 flex flex-col bg-transparent bg-app-wallpaper text-foreground relative overflow-hidden min-h-screen z-10">
       {/* Decorative gradient glow elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none z-0" />
 
       {/* HEADER NAVBAR */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-border/80 bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-1.5 bg-primary rounded-lg text-primary-foreground shadow-xs">
-              <Sparkles className="h-4.5 w-4.5" />
-            </div>
-            <span className="font-extrabold text-xl tracking-tight text-foreground">
-              RecapAI
-            </span>
-          </div>
+          <Link href="/">
+            <Logo size="md" />
+          </Link>
 
           <nav className="flex items-center gap-3">
             <ThemeToggle />
@@ -84,7 +79,7 @@ export default function LandingPage() {
 
       {/* DASHBOARD MOCKUP PREVIEW */}
       <section className="max-w-5xl mx-auto px-4 pb-20 relative z-10">
-        <div className="relative rounded-xl border border-border bg-card/60 backdrop-blur-xl p-4 shadow-xl overflow-hidden group">
+        <div className="relative rounded-xl border border-border/80 card-solid p-4 shadow-2xl overflow-hidden group">
           {/* Neon Border Highlight */}
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
@@ -170,7 +165,7 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS SECTION */}
-      <section className="border-t border-border bg-card/40 py-20 relative z-10">
+      <section className="border-t border-border/80 bg-card/90 backdrop-blur-sm py-20 relative z-10">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">How It Works</h2>
@@ -181,7 +176,7 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4 hover:border-primary/30 transition-colors shadow-xs">
+            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 1
               </div>
@@ -192,7 +187,7 @@ export default function LandingPage() {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4 hover:border-primary/30 transition-colors shadow-xs">
+            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 2
               </div>
@@ -203,7 +198,7 @@ export default function LandingPage() {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4 hover:border-primary/30 transition-colors shadow-xs">
+            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 3
               </div>
@@ -217,7 +212,7 @@ export default function LandingPage() {
       </section>
 
       {/* CORE BENEFITS / FEATURES GRID */}
-      <section className="border-t border-border py-20 z-10">
+      <section className="border-t border-border/80 py-20 z-10 bg-background/80 backdrop-blur-xs">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">Designed for Speed</h2>
@@ -228,7 +223,7 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Feature 1 */}
-            <div className="border border-border bg-card p-6 rounded-lg space-y-2 shadow-xs">
+            <div className="border border-border/80 bg-card/95 p-6 rounded-xl space-y-2 shadow-md hover:shadow-lg transition-all">
               <div className="p-2 bg-primary/10 w-fit text-primary rounded-md border border-primary/20 mb-2">
                 <FileText className="h-5 w-5" />
               </div>
@@ -239,7 +234,7 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="border border-border bg-card p-6 rounded-lg space-y-2 shadow-xs">
+            <div className="border border-border/80 bg-card/95 p-6 rounded-xl space-y-2 shadow-md hover:shadow-lg transition-all">
               <div className="p-2 bg-primary/10 w-fit text-primary rounded-md border border-primary/20 mb-2">
                 <Kanban className="h-5 w-5" />
               </div>
@@ -250,7 +245,7 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="border border-border bg-card p-6 rounded-lg space-y-2 shadow-xs">
+            <div className="border border-border/80 bg-card/95 p-6 rounded-xl space-y-2 shadow-md hover:shadow-lg transition-all">
               <div className="p-2 bg-primary/10 w-fit text-primary rounded-md border border-primary/20 mb-2">
                 <Download className="h-5 w-5" />
               </div>
@@ -264,7 +259,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border bg-card py-12 relative z-10">
+      <footer className="border-t border-border/80 bg-card/95 backdrop-blur-md py-12 relative z-10">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-muted-foreground mb-8">
           <div className="space-y-3">
             <div className="font-semibold text-foreground text-sm">RecapAI</div>

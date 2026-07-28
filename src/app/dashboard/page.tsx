@@ -14,6 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/logo'
 import { toast } from 'sonner'
 import { 
   Calendar, 
@@ -524,23 +525,13 @@ function DashboardContent() {
   }
 
   const renderSidebarContent = () => (
-    <div className="flex flex-col h-full bg-card border-r border-border">
+    <div className="flex flex-col h-full bg-card/95 backdrop-blur-md border-r border-border/80">
       {/* App Logo Area */}
       <div className="p-6 border-b border-border flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="p-1.5 bg-primary rounded-lg text-primary-foreground group-hover:opacity-90 transition-opacity">
-            <Sparkles className="h-4.5 w-4.5" />
-          </div>
-          <span className="font-extrabold text-lg tracking-tight text-foreground">
-            RecapAI
-          </span>
+        <Link href="/" className="flex items-center group">
+          <Logo showBadge size="sm" />
         </Link>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <span className="text-[10px] uppercase font-bold tracking-widest text-primary border border-primary/30 bg-primary/10 rounded px-1.5 py-0.5">
-            MVP
-          </span>
-        </div>
+        <ThemeToggle />
       </div>
 
       {/* Action button */}
@@ -636,14 +627,14 @@ function DashboardContent() {
   )
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row bg-background text-foreground min-h-screen">
+    <div className="flex-1 flex flex-col md:flex-row bg-transparent bg-app-wallpaper text-foreground min-h-screen z-10">
       {/* 1. DESKTOP SIDEBAR */}
-      <aside className="hidden md:flex w-72 lg:w-80 border-r border-border flex-col bg-card sticky top-0 h-screen max-h-screen shrink-0">
+      <aside className="hidden md:flex w-72 lg:w-80 border-r border-border/80 flex-col bg-card/95 backdrop-blur-md sticky top-0 h-screen max-h-screen shrink-0 z-10 shadow-sm">
         {renderSidebarContent()}
       </aside>
 
       {/* Mobile Navbar Header */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-md p-4 flex items-center justify-between md:hidden sticky top-0 z-20 shrink-0">
+      <header className="border-b border-border/80 bg-background/95 backdrop-blur-md p-4 flex items-center justify-between md:hidden sticky top-0 z-20 shrink-0 shadow-xs">
         <div className="flex items-center gap-2">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger
@@ -657,7 +648,9 @@ function DashboardContent() {
               {renderSidebarContent()}
             </SheetContent>
           </Sheet>
-          <span className="font-extrabold text-base tracking-tight text-foreground">RecapAI</span>
+          <Link href="/">
+            <Logo size="sm" />
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -719,7 +712,7 @@ function DashboardContent() {
           /* MEETING WORKSPACE DETAIL */
           <div className="flex-1 flex flex-col min-w-0">
             {/* Header section */}
-            <div className="p-4 sm:p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-background/60 sticky top-0 z-10 backdrop-blur-md">
+            <div className="p-4 sm:p-6 border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card/95 sticky top-0 z-10 backdrop-blur-md shadow-xs">
               <div className="space-y-1 min-w-0">
                 <h1 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight truncate">{selectedMeeting.title}</h1>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground font-medium flex-wrap">
@@ -800,7 +793,7 @@ function DashboardContent() {
 
                 return (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <Card className="bg-card border-border shadow-xs">
+                    <Card className="bg-card/95 border-border/80 shadow-sm hover:shadow-md transition-shadow">
                       <CardContent className="p-4 flex items-center gap-4">
                         <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl text-primary shrink-0">
                           <ListTodo className="h-5 w-5" />
@@ -812,7 +805,7 @@ function DashboardContent() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-card border-border shadow-xs">
+                    <Card className="bg-card/95 border-border/80 shadow-sm hover:shadow-md transition-shadow">
                       <CardContent className="p-4 flex flex-col justify-center min-w-0 h-full">
                         <div className="flex items-center justify-between mb-2">
                           <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Completion Rate</div>
@@ -827,7 +820,7 @@ function DashboardContent() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-card border-border shadow-xs">
+                    <Card className="bg-card/95 border-border/80 shadow-sm hover:shadow-md transition-shadow">
                       <CardContent className="p-4 flex items-center gap-4">
                         <div className={`p-3 rounded-xl shrink-0 border ${
                           highOpen > 0 
@@ -881,10 +874,10 @@ function DashboardContent() {
                         onDragOver={(e) => handleDragOver(e, 'open')}
                         onDragLeave={handleDragLeave}
                         onDrop={(e) => handleDrop(e, 'open')}
-                        className={`bg-card/70 border rounded-xl p-4 space-y-4 transition-all duration-200 ${
+                        className={`bg-card/95 backdrop-blur-md border rounded-xl p-4 space-y-4 shadow-sm transition-all duration-200 ${
                           dragOverColumn === 'open' 
                             ? 'border-primary ring-2 ring-primary/20 bg-primary/5' 
-                            : 'border-border'
+                            : 'border-border/80'
                         }`}
                       >
                         <div className="flex justify-between items-center px-1">
@@ -971,10 +964,10 @@ function DashboardContent() {
                         onDragOver={(e) => handleDragOver(e, 'done')}
                         onDragLeave={handleDragLeave}
                         onDrop={(e) => handleDrop(e, 'done')}
-                        className={`bg-card/70 border rounded-xl p-4 space-y-4 transition-all duration-200 ${
+                        className={`bg-card/95 backdrop-blur-md border rounded-xl p-4 space-y-4 shadow-sm transition-all duration-200 ${
                           dragOverColumn === 'done' 
                             ? 'border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-500/5' 
-                            : 'border-border'
+                            : 'border-border/80'
                         }`}
                       >
                         <div className="flex justify-between items-center px-1">
