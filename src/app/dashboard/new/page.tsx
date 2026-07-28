@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { toast } from 'sonner'
 import { ArrowLeft, FileText, Loader2, Sparkles, Upload } from 'lucide-react'
 import Link from 'next/link'
@@ -89,8 +90,8 @@ export default function NewMeetingPage() {
         throw new Error(meetingError?.message || 'Failed to save meeting.')
       }
 
-      // 3. Call Claude AI extraction route
-      setStatusMessage('Claude is analyzing the transcript and extracting action items...')
+      // 3. Call AI extraction route
+      setStatusMessage('AI is analyzing the transcript and extracting action items...')
       
       const response = await fetch('/api/extract', {
         method: 'POST',
@@ -117,51 +118,48 @@ export default function NewMeetingPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-slate-950 text-slate-100 min-h-screen">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="flex-1 flex flex-col bg-background text-foreground min-h-screen">
       {/* Navigation header */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-20">
+      <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-20">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="text-slate-400 hover:text-white transition-colors">
-              <Button variant="ghost" size="sm" className="gap-1 text-slate-400 hover:text-white">
+            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
             </Link>
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-100 to-slate-300">
+            <h1 className="text-xl font-bold text-foreground">
               New Meeting
             </h1>
           </div>
+          <ThemeToggle />
         </div>
       </header>
 
       {/* Form Content */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-8 z-10">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Card className="border-slate-800 bg-slate-900/40 backdrop-blur-xl text-slate-100 shadow-xl">
+          <Card className="border-border bg-card text-card-foreground shadow-md">
             <CardHeader>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-indigo-400" />
+                <Sparkles className="h-5 w-5 text-primary" />
                 Process meeting with AI
               </CardTitle>
-              <CardDescription className="text-slate-400">
-                Provide a transcript of your meeting. Claude will extract all key action items, assignments, and priorities.
+              <CardDescription className="text-muted-foreground">
+                Provide a transcript of your meeting. AI will extract all key action items, assignments, and priorities.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Title Input */}
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-slate-300 font-medium">Meeting Title</Label>
+                <Label htmlFor="title" className="text-foreground font-medium">Meeting Title</Label>
                 <Input
                   id="title"
                   placeholder="e.g. RecapAI Weekly Sprint Planning"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 text-slate-100 placeholder-slate-500 h-11"
+                  className="bg-background border-input focus-visible:ring-primary text-foreground placeholder:text-muted-foreground h-11"
                   required
                   disabled={isSubmitting}
                 />
@@ -170,8 +168,8 @@ export default function NewMeetingPage() {
               {/* Drag/Drop and File Upload Grid */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="transcript" className="text-slate-300 font-medium">Transcript Text</Label>
-                  <div className="text-xs text-indigo-400 flex items-center gap-1.5">
+                  <Label htmlFor="transcript" className="text-foreground font-medium">Transcript Text</Label>
+                  <div className="text-xs text-primary flex items-center gap-1.5 font-medium">
                     <FileText className="h-3 w-3" />
                     Loads `.txt` files directly
                   </div>
@@ -180,7 +178,7 @@ export default function NewMeetingPage() {
                 {/* Upload Trigger Area */}
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900/20 rounded-lg p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 group"
+                  className="border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent/40 rounded-lg p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 group"
                 >
                   <input
                     type="file"
@@ -190,11 +188,11 @@ export default function NewMeetingPage() {
                     className="hidden"
                     disabled={isSubmitting}
                   />
-                  <div className="p-3 bg-slate-950 border border-slate-800 rounded-full group-hover:border-indigo-500/30 group-hover:bg-indigo-950/20 transition-all">
-                    <Upload className="h-5 w-5 text-slate-400 group-hover:text-indigo-400" />
+                  <div className="p-3 bg-muted border border-border rounded-full group-hover:border-primary/30 group-hover:bg-primary/10 transition-all">
+                    <Upload className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
                   </div>
-                  <div className="text-sm font-medium text-slate-300">Click to upload a transcript file</div>
-                  <div className="text-xs text-slate-500">Supports UTF-8 encoded text files (.txt)</div>
+                  <div className="text-sm font-medium text-foreground">Click to upload a transcript file</div>
+                  <div className="text-xs text-muted-foreground">Supports UTF-8 encoded text files (.txt)</div>
                 </div>
 
                 {/* Textarea */}
@@ -204,12 +202,12 @@ export default function NewMeetingPage() {
                     placeholder="Paste your meeting transcripts here (including dialogue or speaker timestamps if available)..."
                     value={transcript}
                     onChange={(e) => setTranscript(e.target.value)}
-                    className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 text-slate-100 placeholder-slate-500 min-h-[300px] font-mono text-sm leading-relaxed"
+                    className="bg-background border-input focus-visible:ring-primary text-foreground placeholder:text-muted-foreground min-h-[300px] font-mono text-sm leading-relaxed"
                     required
                     disabled={isSubmitting}
                   />
                   {transcript && (
-                    <div className="text-right text-xs text-slate-500 mt-1">
+                    <div className="text-right text-xs text-muted-foreground mt-1">
                       {transcript.length.toLocaleString()} characters
                     </div>
                   )}
@@ -217,10 +215,10 @@ export default function NewMeetingPage() {
               </div>
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-4 border-t border-slate-900 pt-6">
+            <CardFooter className="flex flex-col gap-4 border-t border-border pt-6">
               <Button
                 type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all shadow-lg hover:shadow-indigo-500/20 py-6 text-base"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all shadow-md py-6 text-base"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -237,8 +235,8 @@ export default function NewMeetingPage() {
               </Button>
 
               {isSubmitting && statusMessage && (
-                <div className="text-center text-sm text-indigo-400 animate-pulse flex items-center justify-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-indigo-500" />
+                <div className="text-center text-sm text-primary animate-pulse flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
                   <span>{statusMessage}</span>
                 </div>
               )}

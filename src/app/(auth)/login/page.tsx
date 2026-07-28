@@ -8,8 +8,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { toast } from 'sonner'
-import { Check, Loader2, Lock, Mail, Sparkles } from 'lucide-react'
+import { Check, Database, Loader2, Lock, Mail, Sparkles } from 'lucide-react'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -24,7 +26,7 @@ export default function LoginPage() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
     if (!url || !key || url.includes('your-supabase-project') || key === 'your-supabase-anon-key') {
-      toast.error('Supabase project configuration is missing. Please define valid credentials in .env.local.')
+      toast.error('Supabase project credentials missing or invalid in .env.local.')
       return false
     }
     return true
@@ -50,7 +52,7 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       console.warn('Google sign-in error:', err)
-      toast.error('Could not connect to the Google OAuth server.')
+      toast.error('Could not connect to Supabase server. Try Demo Mode below!')
       setIsGoogleLoading(false)
     }
   }
@@ -75,7 +77,7 @@ export default function LoginPage() {
       })
 
       if (error) {
-        toast.error(error.message || 'Failed to sign in. Please check your credentials.')
+        toast.error(error.message || 'Failed to sign in. Check credentials or try Demo Mode!')
         setIsLoading(false)
       } else {
         toast.success('Successfully logged in! Redirecting...')
@@ -84,7 +86,7 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       console.warn('Sign in network warning:', err?.message || err)
-      toast.error('Could not connect to the authentication server. Please check your network connection.')
+      toast.error('Could not connect to authentication server. Try Demo Mode!')
       setIsLoading(false)
     }
   }
@@ -120,51 +122,61 @@ export default function LoginPage() {
       if (error) {
         toast.error(error.message || 'Failed to register.')
       } else {
-        // In Supabase, if email confirmation is enabled, the user might need to check their email.
-        // If it is disabled, they might be logged in directly.
-        if (data.session) {
+        if (data?.session) {
           toast.success('Account created successfully! Redirecting...')
           router.push('/dashboard')
           router.refresh()
         } else {
-          toast.success('Registration successful! Please check your email for a verification link.')
+          toast.success('Registration completed! Redirecting to dashboard...')
+          router.push('/dashboard')
         }
       }
     } catch (err: any) {
       console.warn('Sign up network warning:', err?.message || err)
-      toast.error('Could not connect to the authentication server. Please check your network connection.')
+      toast.error('Could not connect to authentication server. Try Demo Mode!')
       setIsLoading(false)
     }
   }
 
+  const handleEnterDemoMode = () => {
+    toast.success('Entering Demo Mode with mock meetings & tasks!')
+    router.push('/dashboard?demo=true')
+  }
+
   return (
-    <div className="flex-1 flex flex-col justify-center items-center px-4 relative overflow-hidden bg-slate-950">
-      {/* Decorative gradient glowing circles */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="flex-1 flex flex-col justify-center items-center px-4 relative overflow-hidden bg-background text-foreground min-h-screen">
+      {/* Top bar with ThemeToggle and Logo link */}
+      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 max-w-4xl mx-auto">
+        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg tracking-tight text-foreground">
+          <div className="p-1 bg-primary rounded-md text-primary-foreground">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          RecapAI
+        </Link>
+        <ThemeToggle />
+      </div>
 
-      <div className="w-full max-w-md space-y-8 z-10">
+      <div className="w-full max-w-md space-y-6 z-10 my-12">
         <div className="flex flex-col items-center text-center space-y-2">
-
-          <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 via-indigo-400 to-violet-300 drop-shadow-sm mt-3">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
             RecapAI
           </h1>
-          <p className="text-sm text-slate-400 max-w-xs">
+          <p className="text-sm text-muted-foreground max-w-xs">
             Paste meeting transcripts, extract action items, and organize your team.
           </p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-slate-900 border border-slate-800 p-1 text-slate-400">
+          <TabsList className="grid w-full grid-cols-2 bg-muted border border-border p-1 text-muted-foreground">
             <TabsTrigger 
               value="signin" 
-              className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all text-xs"
             >
               Sign In
             </TabsTrigger>
             <TabsTrigger 
               value="signup"
-              className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all text-xs"
             >
               Create Account
             </TabsTrigger>
@@ -172,10 +184,10 @@ export default function LoginPage() {
 
           <TabsContent value="signin" className="mt-4">
             <form onSubmit={handleSignIn}>
-              <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-xl text-slate-100 shadow-xl">
+              <Card className="border-border bg-card text-card-foreground shadow-md">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Welcome Back</CardTitle>
-                  <CardDescription className="text-slate-400 text-xs">
+                  <CardDescription className="text-muted-foreground text-xs">
                     Enter your email and password to access your dashboard.
                   </CardDescription>
                 </CardHeader>
@@ -183,14 +195,14 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signin-email">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3.5 h-4 w-4 text-slate-500" />
+                      <Mail className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signin-email"
                         type="email"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 pl-10"
+                        className="bg-background border-input focus-visible:ring-primary pl-10"
                         required
                         disabled={isLoading || isGoogleLoading}
                       />
@@ -199,24 +211,24 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signin-password">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3.5 h-4 w-4 text-slate-500" />
+                      <Lock className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signin-password"
                         type="password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 pl-10"
+                        className="bg-background border-input focus-visible:ring-primary pl-10"
                         required
                         disabled={isLoading || isGoogleLoading}
                       />
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col gap-4">
+                <CardFooter className="flex flex-col gap-3">
                   <Button
                     type="submit"
-                    className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all shadow-lg hover:shadow-indigo-500/20"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all shadow-md"
                     disabled={isLoading || isGoogleLoading}
                   >
                     {isLoading ? (
@@ -231,16 +243,16 @@ export default function LoginPage() {
 
                   <div className="relative flex items-center justify-center w-full my-1">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-slate-800" />
+                      <div className="w-full border-t border-border" />
                     </div>
-                    <span className="relative bg-slate-900 px-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Or</span>
+                    <span className="relative bg-card px-3 text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">Or</span>
                   </div>
 
                   <Button
                     type="button"
                     onClick={handleGoogleSignIn}
                     variant="outline"
-                    className="w-full border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-900 transition-colors h-11"
+                    className="w-full border-border bg-background text-foreground hover:bg-accent transition-colors h-10"
                     disabled={isLoading || isGoogleLoading}
                   >
                     {isGoogleLoading ? (
@@ -267,6 +279,16 @@ export default function LoginPage() {
                     )}
                     Continue with Google
                   </Button>
+
+                  <Button
+                    type="button"
+                    onClick={handleEnterDemoMode}
+                    variant="ghost"
+                    className="w-full text-xs font-semibold text-primary hover:bg-primary/10 gap-1.5 h-9"
+                  >
+                    <Database className="h-3.5 w-3.5" />
+                    Explore Dashboard in Demo Mode
+                  </Button>
                 </CardFooter>
               </Card>
             </form>
@@ -274,10 +296,10 @@ export default function LoginPage() {
 
           <TabsContent value="signup" className="mt-4">
             <form onSubmit={handleSignUp}>
-              <Card className="border-slate-800 bg-slate-900/60 backdrop-blur-xl text-slate-100 shadow-xl">
+              <Card className="border-border bg-card text-card-foreground shadow-md">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Get Started</CardTitle>
-                  <CardDescription className="text-slate-400 text-xs">
+                  <CardDescription className="text-muted-foreground text-xs">
                     Create a new account to start extracting actions.
                   </CardDescription>
                 </CardHeader>
@@ -285,14 +307,14 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signup-email">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3.5 h-4 w-4 text-slate-500" />
+                      <Mail className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-email"
                         type="email"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 pl-10"
+                        className="bg-background border-input focus-visible:ring-primary pl-10"
                         required
                         disabled={isLoading || isGoogleLoading}
                       />
@@ -301,24 +323,24 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <Label htmlFor="signup-password">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3.5 h-4 w-4 text-slate-500" />
+                      <Lock className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-password"
                         type="password"
                         placeholder="At least 6 characters"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="bg-slate-950 border-slate-800 focus-visible:ring-indigo-500 pl-10"
+                        className="bg-background border-input focus-visible:ring-primary pl-10"
                         required
                         disabled={isLoading || isGoogleLoading}
                       />
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col gap-4">
+                <CardFooter className="flex flex-col gap-3">
                   <Button
                     type="submit"
-                    className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all shadow-lg hover:shadow-indigo-500/20"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all shadow-md"
                     disabled={isLoading || isGoogleLoading}
                   >
                     {isLoading ? (
@@ -333,16 +355,16 @@ export default function LoginPage() {
 
                   <div className="relative flex items-center justify-center w-full my-1">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-slate-800" />
+                      <div className="w-full border-t border-border" />
                     </div>
-                    <span className="relative bg-slate-900 px-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Or</span>
+                    <span className="relative bg-card px-3 text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">Or</span>
                   </div>
 
                   <Button
                     type="button"
                     onClick={handleGoogleSignIn}
                     variant="outline"
-                    className="w-full border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-900 transition-colors h-11"
+                    className="w-full border-border bg-background text-foreground hover:bg-accent transition-colors h-10"
                     disabled={isLoading || isGoogleLoading}
                   >
                     {isGoogleLoading ? (
@@ -368,6 +390,16 @@ export default function LoginPage() {
                       </svg>
                     )}
                     Continue with Google
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={handleEnterDemoMode}
+                    variant="ghost"
+                    className="w-full text-xs font-semibold text-primary hover:bg-primary/10 gap-1.5 h-9"
+                  >
+                    <Database className="h-3.5 w-3.5" />
+                    Explore Dashboard in Demo Mode
                   </Button>
                 </CardFooter>
               </Card>

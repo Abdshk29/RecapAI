@@ -14,6 +14,7 @@ export interface Meeting {
   title: string
   raw_transcript: string
   created_at: string
+  user_id?: string
 }
 
 // Escapes CSV cell value to handle commas, quotes, and newlines
