@@ -136,25 +136,6 @@ body {
   position: relative;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image: url('/bg-light-mesh.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.75;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.dark body::before {
-  background-image: url('/bg-dark-mesh.png');
-  opacity: 0.85;
-}
-
 .bg-app-wallpaper {
   position: relative;
   z-index: 1;

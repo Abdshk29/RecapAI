@@ -25,23 +25,24 @@ export default function LandingPage() {
       <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none z-0" />
 
       {/* HEADER NAVBAR */}
-      <header className="border-b border-border/80 bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/">
+      <header className="border-b border-border bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between gap-2">
+          <Link href="/" className="shrink-0 min-w-0">
             <Logo size="md" />
           </Link>
 
-          <nav className="flex items-center gap-3">
-            <ThemeToggle />
-            <Link href="/login">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-semibold transition-colors">
+          <nav className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <ThemeToggle className="h-8 w-8 sm:h-9 sm:w-9 shrink-0" />
+            <Link href="/login" className="hidden sm:inline-flex shrink-0">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-xs sm:text-sm font-semibold transition-colors px-2.5 sm:px-3">
                 Sign In
               </Button>
             </Link>
-            <Link href="/dashboard">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm transition-all shadow-sm">
-                Go to Dashboard
-                <ArrowRight className="h-4 w-4 ml-1.5" />
+            <Link href="/dashboard" className="shrink-0">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs sm:text-sm transition-all shadow-sm px-2.5 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9 whitespace-nowrap">
+                <span className="hidden sm:inline">Go to Dashboard</span>
+                <span className="sm:hidden">Dashboard</span>
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-1 shrink-0" />
               </Button>
             </Link>
           </nav>
@@ -51,7 +52,7 @@ export default function LandingPage() {
       {/* HERO SECTION - Modern Left-Aligned Glass Container Card */}
       <section className="relative pt-10 pb-12 md:pt-16 md:pb-16 z-10">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="relative rounded-3xl border border-border card-solid p-8 md:p-12 shadow-2xl overflow-hidden backdrop-blur-xl">
+          <div className="relative rounded-2xl sm:rounded-3xl border border-border card-solid p-5 sm:p-8 md:p-12 shadow-2xl overflow-hidden backdrop-blur-xl">
             {/* Subtle Gradient Glow inside hero card */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
 

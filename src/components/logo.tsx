@@ -10,18 +10,18 @@ interface LogoProps {
 export function Logo({ className = '', iconOnly = false, size = 'md', showBadge = false }: LogoProps) {
   const containerSizes = {
     sm: 'h-7 w-7 p-1 rounded-lg',
-    md: 'h-9 w-9 p-1.5 rounded-xl',
-    lg: 'h-11 w-11 p-2 rounded-xl',
+    md: 'h-8 w-8 sm:h-9 sm:w-9 p-1.5 rounded-xl',
+    lg: 'h-10 w-10 sm:h-11 sm:w-11 p-2 rounded-xl',
   }
 
   const textSizes = {
-    sm: 'text-base',
-    md: 'text-xl',
-    lg: 'text-2xl',
+    sm: 'text-sm sm:text-base',
+    md: 'text-lg sm:text-xl',
+    lg: 'text-xl sm:text-2xl',
   }
 
   return (
-    <div className={`inline-flex items-center gap-2.5 group select-none ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 sm:gap-2.5 group select-none shrink-0 ${className}`}>
       {/* Custom Professional Logo Icon */}
       <div className={`relative flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white shadow-md shadow-blue-500/25 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all duration-200 shrink-0 ${containerSizes[size]}`}>
         <svg

@@ -44,17 +44,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          {/* Wallpaper Background Picture Layers (Realistic Meeting Scene with Gradient Vignette) */}
+          {/* Wallpaper Background Picture Layers (Clean Opacity Transition) */}
           <div 
-            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-right-top md:bg-right opacity-30 transition-opacity duration-300 dark:hidden"
+            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-center md:bg-right opacity-25 dark:opacity-0 transition-opacity duration-300"
             style={{ backgroundImage: "url('/bg-light-meeting.png')" }}
           />
           <div 
-            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-right-top md:bg-right opacity-40 transition-opacity duration-300 hidden dark:block"
+            className="fixed inset-0 z-0 pointer-events-none bg-cover bg-center md:bg-right opacity-0 dark:opacity-35 transition-opacity duration-300"
             style={{ backgroundImage: "url('/bg-dark-meeting.png')" }}
           />
-          {/* Subtle gradient vignette overlay to ensure text contrast and prevent background picture clashing */}
-          <div className="fixed inset-0 z-0 pointer-events-none bg-gradient-to-r from-background via-background/85 to-background/30 dark:from-background dark:via-background/90 dark:to-background/40" />
+          {/* Soft gradient vignette overlay to ensure text contrast and legibility */}
+          <div className="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b md:bg-gradient-to-r from-background via-background/90 to-background/50" />
 
           <div className="relative z-10 flex-1 flex flex-col">
             {children}
