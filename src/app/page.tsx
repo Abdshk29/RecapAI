@@ -360,11 +360,11 @@ export default function LandingPage() {
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <span className="text-muted-foreground font-medium">Email:</span>
-                <a href="mailto:support@recapai.com" className="hover:text-primary transition-colors">abdshk28@gmail.com</a>
+                <a href="mailto:abdshk28@gmail.com" className="hover:text-primary transition-colors">abdshk28@gmail.com</a>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-muted-foreground font-medium">Phone:</span>
-                <a href="tel:+15550199" className="hover:text-primary transition-colors">+92-306-669-8696</a>
+                <a href="tel:+923066698696" className="hover:text-primary transition-colors">+92-306-669-8696</a>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-muted-foreground font-medium">Hours:</span>
