@@ -32,7 +32,7 @@ export function Logo({ className = '', iconOnly = false, size = 'md', showBadge 
         >
           {/* Background subtle glow fill */}
           <rect width="32" height="32" rx="8" fill="url(#logo_grad)" />
-          
+
           {/* Transcript Document Layer */}
           <path
             d="M9 7C9 5.89543 9.89543 5 11 5H18.5L23 9.5V23C23 24.1046 22.1046 25 21 25H11C9.89543 25 9 24.1046 9 23V7Z"
@@ -51,7 +51,7 @@ export function Logo({ className = '', iconOnly = false, size = 'md', showBadge 
           />
           {/* Summary Text Lines */}
           <line x1="12.5" y1="11" x2="16.5" y2="11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.7" />
-          
+
           {/* Action Checkmark Loop */}
           <path
             d="M12.5 17.5L15.5 20.5L22.5 13.5"

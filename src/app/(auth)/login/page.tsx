@@ -180,7 +180,7 @@ export default function LoginPage() {
 
           <TabsContent value="signin" className="mt-4">
             <form onSubmit={handleSignIn}>
-              <Card className="border-border/80 bg-card/95 backdrop-blur-md text-card-foreground shadow-xl">
+              <Card className="border-border bg-card/95 backdrop-blur-md text-card-foreground shadow-xl">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Welcome Back</CardTitle>
                   <CardDescription className="text-muted-foreground text-xs">

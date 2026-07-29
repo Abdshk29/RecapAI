@@ -48,38 +48,122 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section className="relative pt-20 pb-16 md:pt-28 md:pb-24 z-10">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
+      {/* HERO SECTION - Modern Left-Aligned Glass Container Card */}
+      <section className="relative pt-10 pb-12 md:pt-16 md:pb-16 z-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="relative rounded-3xl border border-border card-solid p-8 md:p-12 shadow-2xl overflow-hidden backdrop-blur-xl">
+            {/* Subtle Gradient Glow inside hero card */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
-            Turn Meeting Transcripts <br />
-            Into Action Items Instantly
-          </h1>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Left Column: Left-Aligned Text Content */}
+              <div className="lg:col-span-7 space-y-6 text-left">
+                <Badge className="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15 text-xs px-3 py-1 font-semibold rounded-full w-fit flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                  AI-Powered Meeting Summary & Task Extraction
+                </Badge>
 
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Stop manually parsing zoom transcripts. Paste raw text or drag in a <code className="text-primary font-mono text-sm bg-muted border border-border px-1.5 py-0.5 rounded">.txt</code> transcript, and let AI extract tasks, assignees, deadlines, and priorities in seconds.
-          </p>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+                  Turn Meeting Transcripts <br />
+                  <span className="text-primary">Into Action Items</span> Instantly
+                </h1>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Link href="/login">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-6 rounded-lg text-base shadow-lg transition-all gap-2 group w-48">
-                Get Started Free
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link href="/login?tab=signup">
-              <Button variant="outline" className="border-border bg-card hover:bg-accent text-foreground px-8 py-6 rounded-lg text-base transition-all w-48">
-                Create Account
-              </Button>
-            </Link>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
+                  Stop manually parsing Zoom, Teams, or Meet transcripts. Paste raw text or drop a <code className="text-primary font-mono text-sm bg-muted border border-border px-1.5 py-0.5 rounded">.txt</code> transcript, and let AI extract structured tasks, owners, deadlines, and priorities in seconds.
+                </p>
+
+                {/* Feature Highlights List */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs md:text-sm text-foreground/90 font-medium">
+                  <div className="flex items-center gap-2">
+                    <div className="h-5 w-5 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+                    <span>Automatic Assignee Detection</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-5 w-5 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+                    <span>Smart Due Dates & Priorities</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-5 w-5 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+                    <span>Interactive Kanban & Tables</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-5 w-5 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+                    <span>Export CSV & Markdown</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4 pt-4 items-center">
+                  <Link href="/login">
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-7 py-6 rounded-xl text-base shadow-lg transition-all gap-2 group">
+                      Get Started Free
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Link href="/login?tab=signup">
+                    <Button variant="outline" className="border-border bg-card/90 hover:bg-accent text-foreground px-7 py-6 rounded-xl text-base transition-all">
+                      Create Account
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column: Quick Interactive Preview Card */}
+              <div className="lg:col-span-5 space-y-4">
+                <div className="border border-border bg-background/90 rounded-2xl p-5 shadow-lg space-y-4 text-left">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-primary" />
+                      <span className="text-xs font-bold text-foreground">Sample Transcript Extract</span>
+                    </div>
+                    <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">Live Preview</Badge>
+                  </div>
+
+                  <div className="bg-muted/60 p-3 rounded-lg text-xs font-mono text-muted-foreground leading-snug border border-border/50">
+                    &quot;Bob: I will deploy the PostgreSQL migrations by tomorrow. Charlie: I can adjust the landing hero palette by Thursday.&quot;
+                  </div>
+
+                  <div className="space-y-2 pt-1">
+                    <div className="text-xs font-semibold text-foreground flex items-center justify-between">
+                      <span>Extracted Action Items</span>
+                      <span className="text-[10px] text-muted-foreground">2 Tasks Found</span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="p-2.5 rounded-lg bg-card border border-border flex items-center justify-between text-xs">
+                        <div className="space-y-0.5">
+                          <div className="font-semibold text-foreground">Deploy PostgreSQL migrations</div>
+                          <div className="text-[11px] text-muted-foreground flex items-center gap-2">
+                            <span className="flex items-center gap-1"><User className="h-3 w-3" /> Bob</span>
+                            <span>•</span>
+                            <span>Tomorrow</span>
+                          </div>
+                        </div>
+                        <Badge className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px]">High</Badge>
+                      </div>
+
+                      <div className="p-2.5 rounded-lg bg-card border border-border flex items-center justify-between text-xs">
+                        <div className="space-y-0.5">
+                          <div className="font-semibold text-foreground">Adjust landing hero palette</div>
+                          <div className="text-[11px] text-muted-foreground flex items-center gap-2">
+                            <span className="flex items-center gap-1"><User className="h-3 w-3" /> Charlie</span>
+                            <span>•</span>
+                            <span>Thursday</span>
+                          </div>
+                        </div>
+                        <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10px]">Medium</Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* DASHBOARD MOCKUP PREVIEW */}
-      <section className="max-w-5xl mx-auto px-4 pb-20 relative z-10">
-        <div className="relative rounded-xl border border-border/80 card-solid p-4 shadow-2xl overflow-hidden group">
+      <section className="max-w-6xl mx-auto px-4 pb-20 relative z-10">
+        <div className="relative rounded-2xl border border-border card-solid p-6 shadow-2xl overflow-hidden group">
           {/* Neon Border Highlight */}
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
@@ -89,7 +173,7 @@ export default function LandingPage() {
               <div className="h-3 w-3 rounded-full bg-red-500/80" />
               <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
               <div className="h-3 w-3 rounded-full bg-green-500/80" />
-              <span className="text-muted-foreground font-mono ml-2">RecapAI Dashboard</span>
+              <span className="text-muted-foreground font-mono ml-2">RecapAI Workspace View</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-5 w-24 bg-muted border border-border rounded" />
@@ -100,7 +184,7 @@ export default function LandingPage() {
           {/* Mockup Grid */}
           <div className="grid grid-cols-4 gap-4 pt-4">
             {/* Mock Sidebar */}
-            <div className="col-span-1 border-r border-border pr-3 space-y-2 hidden md:block">
+            <div className="col-span-1 border-r border-border pr-3 space-y-2 hidden md:block text-left">
               <div className="h-7 bg-primary/10 border border-primary/20 rounded-md p-1.5 flex items-center justify-between">
                 <div className="h-3 w-16 bg-primary/40 rounded" />
               </div>
@@ -113,7 +197,7 @@ export default function LandingPage() {
             </div>
 
             {/* Mock Main content */}
-            <div className="col-span-4 md:col-span-3 space-y-4">
+            <div className="col-span-4 md:col-span-3 space-y-4 text-left">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <div className="h-5 w-48 bg-foreground/10 rounded" />
@@ -167,16 +251,17 @@ export default function LandingPage() {
       {/* HOW IT WORKS SECTION */}
       <section className="border-t border-border/80 bg-card/90 backdrop-blur-sm py-20 relative z-10">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
-          <div className="text-center space-y-3">
+          <div className="text-left space-y-3">
+            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">Workflow</Badge>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">How It Works</h2>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
+            <p className="text-sm text-muted-foreground max-w-md">
               RecapAI takes the pain out of manual task extraction in three simple steps.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             {/* Step 1 */}
-            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
+            <div className="bg-card/95 border border-border p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 1
               </div>
@@ -187,7 +272,7 @@ export default function LandingPage() {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
+            <div className="bg-card/95 border border-border p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 2
               </div>
@@ -198,7 +283,7 @@ export default function LandingPage() {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-card/95 border border-border/80 p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
+            <div className="bg-card/95 border border-border p-6 rounded-xl space-y-4 hover:border-primary/40 transition-all shadow-md hover:shadow-lg">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold">
                 3
               </div>
@@ -214,14 +299,15 @@ export default function LandingPage() {
       {/* CORE BENEFITS / FEATURES GRID */}
       <section className="border-t border-border/80 py-20 z-10 bg-background/80 backdrop-blur-xs">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
-          <div className="text-center space-y-3">
+          <div className="text-left space-y-3">
+            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">Features</Badge>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">Designed for Speed</h2>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Every detail is engineered to optimize your team's alignment in record time.
+            <p className="text-sm text-muted-foreground max-w-md">
+              Every detail is engineered to optimize your team&apos;s alignment in record time.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
             {/* Feature 1 */}
             <div className="border border-border/80 bg-card/95 p-6 rounded-xl space-y-2 shadow-md hover:shadow-lg transition-all">
               <div className="p-2 bg-primary/10 w-fit text-primary rounded-md border border-primary/20 mb-2">

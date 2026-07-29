@@ -58,8 +58,8 @@
   --accent: oklch(0.94 0.025 250); /* Light Blue hover #dbeafe */
   --accent-foreground: oklch(0.25 0.1 255);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0.015 250); /* Soft border #e2e8f0 */
-  --input: oklch(0.91 0.015 250);
+  --border: oklch(0.80 0.03 250); /* Distinct, crisp border outline for light mode */
+  --input: oklch(0.80 0.03 250);
   --ring: oklch(0.52 0.24 255);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0.005 250);
@@ -68,7 +68,7 @@
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.94 0.025 250);
   --sidebar-accent-foreground: oklch(0.25 0.1 255);
-  --sidebar-border: oklch(0.91 0.015 250);
+  --sidebar-border: oklch(0.80 0.03 250);
   --sidebar-ring: oklch(0.52 0.24 255);
 }
 
@@ -89,8 +89,8 @@
   --accent: oklch(0.25 0.04 255); /* Dark Blue hover highlight #1e293b */
   --accent-foreground: oklch(0.99 0.005 250);
   --destructive: oklch(0.65 0.2 25);
-  --border: oklch(0.24 0.025 255); /* Border outline #1e293b */
-  --input: oklch(0.24 0.025 255);
+  --border: oklch(0.35 0.04 255); /* Prominent, visible border outline for dark mode */
+  --input: oklch(0.35 0.04 255);
   --ring: oklch(0.99 0 0);
   --sidebar: oklch(0.14 0.04 255);
   --sidebar-foreground: oklch(0.99 0.005 250);
@@ -98,7 +98,7 @@
   --sidebar-primary-foreground: oklch(0.14 0.05 255);
   --sidebar-accent: oklch(0.22 0.03 255);
   --sidebar-accent-foreground: oklch(0.99 0.005 250);
-  --sidebar-border: oklch(0.22 0.025 255);
+  --sidebar-border: oklch(0.35 0.04 255);
   --sidebar-ring: oklch(0.99 0 0);
 }
 
@@ -160,15 +160,16 @@ body::before {
   z-index: 1;
 }
 
-/* Professional card elevate & reduced transparency */
+/* Professional card elevate & crisp visible border definition */
 .card-solid {
   background-color: var(--card);
-  opacity: 0.96;
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  opacity: 0.98;
+  backdrop-filter: blur(16px);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.12);
 }
 
 .dark .card-solid {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.5);
 }
