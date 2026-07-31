@@ -24,6 +24,11 @@ const monoFont = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "RecapAI - AI Action Items Extractor",
   description: "Paste or upload meeting transcripts and let AI extract structured action items instantly.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

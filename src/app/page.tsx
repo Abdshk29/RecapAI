@@ -2,8 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { Logo } from '@/components/logo'
+import { Navbar } from '@/components/navbar'
 import {
   ArrowRight,
   Calendar,
@@ -14,7 +13,10 @@ import {
   ListTodo,
   ShieldAlert,
   UploadCloud,
-  User
+  User,
+  Zap,
+  Target,
+  Clock
 } from 'lucide-react'
 
 export default function LandingPage() {
@@ -25,32 +27,10 @@ export default function LandingPage() {
       <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none z-0" />
 
       {/* HEADER NAVBAR */}
-      <header className="border-b border-border bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between gap-2">
-          <Link href="/" className="shrink-0 min-w-0">
-            <Logo size="md" />
-          </Link>
-
-          <nav className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            <ThemeToggle className="h-8 w-8 sm:h-9 sm:w-9 shrink-0" />
-            <Link href="/login" className="hidden sm:inline-flex shrink-0">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-xs sm:text-sm font-semibold transition-colors px-2.5 sm:px-3">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/dashboard" className="shrink-0">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs sm:text-sm transition-all shadow-sm px-2.5 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9 whitespace-nowrap">
-                <span className="hidden sm:inline">Go to Dashboard</span>
-                <span className="sm:hidden">Dashboard</span>
-                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-1 shrink-0" />
-              </Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       {/* HERO SECTION - Modern Left-Aligned Glass Container Card */}
-      <section className="relative pt-10 pb-12 md:pt-16 md:pb-16 z-10">
+      <section id="home" className="relative pt-10 pb-12 md:pt-16 md:pb-16 z-10">
         <div className="max-w-6xl mx-auto px-4">
           <div className="relative rounded-2xl sm:rounded-3xl border border-border card-solid p-5 sm:p-8 md:p-12 shadow-2xl overflow-hidden backdrop-blur-xl">
             {/* Subtle Gradient Glow inside hero card */}
@@ -249,8 +229,53 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ABOUT SECTION */}
+      <section id="about" className="border-t border-border/80 bg-background/90 backdrop-blur-sm py-16 relative z-10">
+        <div className="max-w-6xl mx-auto px-4 space-y-8">
+          <div className="text-left space-y-3">
+            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">About RecapAI</Badge>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">Eliminate Post-Meeting Task Chaos</h2>
+            <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
+              RecapAI was created to solve a universal pain point: spending hours manually reviewing video call recordings and raw meeting transcripts to write action items. Our intelligent workspace parses unstructured transcripts, extracts assignees and deadlines, and presents them in clear tables and interactive Kanban boards.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            <div className="p-5 rounded-xl border border-border bg-card/60 space-y-2">
+              <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                <Zap className="h-4 w-4" />
+                <span>Instant Extraction</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-snug">
+                Process thousands of lines of meeting notes into structured action items in seconds.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border border-border bg-card/60 space-y-2">
+              <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                <Target className="h-4 w-4" />
+                <span>High Precision</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-snug">
+                Detects assignees, explicit and implied deadlines, and priority levels automatically.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl border border-border bg-card/60 space-y-2">
+              <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                <Clock className="h-4 w-4" />
+                <span>Save 5+ Hours/Week</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-snug">
+                Keep engineering, sales, and product teams aligned without tedious administrative overhead.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS SECTION */}
-      <section className="border-t border-border/80 bg-card/90 backdrop-blur-sm py-20 relative z-10">
+      <section id="how-it-works" className="border-t border-border/80 bg-card/90 backdrop-blur-sm py-20 relative z-10">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
           <div className="text-left space-y-3">
             <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">Workflow</Badge>
@@ -298,7 +323,7 @@ export default function LandingPage() {
       </section>
 
       {/* CORE BENEFITS / FEATURES GRID */}
-      <section className="border-t border-border/80 py-20 z-10 bg-background/80 backdrop-blur-xs">
+      <section id="features" className="border-t border-border/80 py-20 z-10 bg-background/80 backdrop-blur-xs">
         <div className="max-w-6xl mx-auto px-4 space-y-12">
           <div className="text-left space-y-3">
             <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">Features</Badge>
@@ -346,7 +371,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border/80 bg-card/95 backdrop-blur-md py-12 relative z-10">
+      <footer id="contact" className="border-t border-border/80 bg-card/95 backdrop-blur-md py-12 relative z-10">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-muted-foreground mb-8">
           <div className="space-y-3">
             <div className="font-semibold text-foreground text-sm">RecapAI</div>
