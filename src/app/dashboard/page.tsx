@@ -38,7 +38,8 @@ import {
   Square, 
   Trash2, 
   User, 
-  UserPlus 
+  UserPlus,
+  ShieldCheck
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -101,6 +102,7 @@ function DashboardContent() {
   // Custom profile variables
   const [profileName, setProfileName] = useState<string | null>(null)
   const [profileAvatar, setProfileAvatar] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   // Mobile menu sheet state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -132,6 +134,9 @@ function DashboardContent() {
     priority: 'medium' as 'low' | 'medium' | 'high'
   })
 
+  // Known admin email list for instant client authorization
+  const ADMIN_EMAILS = ['abdshk28@gmail.com', 'abdullahlmao933@gmail.com']
+
   // 1. Fetch Auth User and Meetings
   useEffect(() => {
     async function initDashboard() {
@@ -139,8 +144,19 @@ function DashboardContent() {
       try {
         const { data } = await supabase.auth.getUser()
         if (data?.user) {
-          setUserEmail(data.user.email ?? null)
-          fetchProfile(data.user.id)
+          const email = data.user.email ?? null
+          setUserEmail(email)
+          
+          if (email && ADMIN_EMAILS.includes(email.toLowerCase())) {
+            setIsAdmin(true)
+          }
+
+          const metaName = data.user.user_metadata?.full_name || data.user.user_metadata?.name || data.user.user_metadata?.preferred_username || null
+          const metaAvatar = data.user.user_metadata?.avatar_url || data.user.user_metadata?.picture || null
+          if (metaName) setProfileName(metaName)
+          if (metaAvatar) setProfileAvatar(metaAvatar)
+          
+          await fetchProfile(data.user.id, email, metaName, metaAvatar)
         } else {
           setUserEmail('demo@recapai.com')
           setProfileName('Demo User')
@@ -156,20 +172,53 @@ function DashboardContent() {
     initDashboard()
   }, [])
 
-  const fetchProfile = async (uid: string) => {
+  const fetchProfile = async (uid: string, userEmail?: string | null, fallbackName?: string | null, fallbackAvatar?: string | null) => {
     try {
+      const isKnownAdmin = userEmail ? ADMIN_EMAILS.includes(userEmail.toLowerCase()) : false
+      if (isKnownAdmin) setIsAdmin(true)
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', uid)
-        .single()
+        .maybeSingle()
 
       if (data && !error) {
-        setProfileName(data.full_name || null)
-        setProfileAvatar(data.avatar_url || null)
+        setProfileName(data.full_name || fallbackName || null)
+        setProfileAvatar(data.avatar_url || fallbackAvatar || null)
+        const activeAdminStatus = data.is_admin === true || isKnownAdmin
+        setIsAdmin(activeAdminStatus)
+
+        if (isKnownAdmin && !data.is_admin) {
+          await supabase.from('profiles').update({ is_admin: true }).eq('id', uid)
+        }
+      } else {
+        // Auto-create profile row if it doesn't exist yet
+        const { data: newProfile } = await supabase
+          .from('profiles')
+          .upsert({
+            id: uid,
+            full_name: fallbackName || 'User',
+            avatar_url: fallbackAvatar || '',
+            is_admin: isKnownAdmin,
+            updated_at: new Date().toISOString()
+          })
+          .select()
+          .maybeSingle()
+
+        if (newProfile) {
+          setProfileName(newProfile.full_name || fallbackName || null)
+          setProfileAvatar(newProfile.avatar_url || fallbackAvatar || null)
+          setIsAdmin(newProfile.is_admin === true || isKnownAdmin)
+        } else if (isKnownAdmin) {
+          setIsAdmin(true)
+        }
       }
     } catch (err) {
       console.warn('Error loading profile:', err)
+      if (userEmail && ADMIN_EMAILS.includes(userEmail.toLowerCase())) {
+        setIsAdmin(true)
+      }
     }
   }
 
@@ -613,6 +662,18 @@ function DashboardContent() {
               </span>
               <span className="text-[10px] text-muted-foreground truncate">{userEmail}</span>
             </div>
+          </Link>
+        )}
+        {isAdmin && (
+          <Link href="/dashboard/admin" className="w-full">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full bg-primary/10 hover:bg-primary/20 text-primary border-primary/20 justify-start gap-2 text-xs font-semibold"
+            >
+              <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+              Admin Panel
+            </Button>
           </Link>
         )}
         <Button

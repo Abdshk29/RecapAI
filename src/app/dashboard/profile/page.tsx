@@ -32,6 +32,7 @@ export default function ProfilePage() {
   const [email, setEmail] = useState<string | null>(null)
   const [fullName, setFullName] = useState('')
   const [avatarUrl, setAvatarUrl] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
 
   // Loading States
   const [isLoadingProfile, setIsLoadingProfile] = useState(true)
@@ -48,6 +49,8 @@ export default function ProfilePage() {
   const [mfaCode, setMfaCode] = useState('')
   const [isVerifyingMfa, setIsVerifyingMfa] = useState(false)
 
+  const ADMIN_EMAILS = ['abdshk28@gmail.com', 'abdullahlmao933@gmail.com']
+
   // Load User Info & Profile
   useEffect(() => {
     async function loadProfile() {
@@ -60,18 +63,52 @@ export default function ProfilePage() {
       }
 
       setUserId(user.id)
-      setEmail(user.email ?? null)
+      const userEmail = user.email ?? null
+      setEmail(userEmail)
+
+      const isKnownAdmin = userEmail ? ADMIN_EMAILS.includes(userEmail.toLowerCase()) : false
+      if (isKnownAdmin) setIsAdmin(true)
+
+      // Fetch OAuth metadata defaults
+      const metaName = user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.preferred_username || ''
+      const metaAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || ''
 
       // Fetch Profile table
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .single()
+        .maybeSingle()
 
-      if (profile && !profileError) {
-        setFullName(profile.full_name || '')
-        setAvatarUrl(profile.avatar_url || '')
+      if (profile) {
+        setFullName(profile.full_name || metaName || '')
+        setAvatarUrl(profile.avatar_url || metaAvatar || '')
+        setIsAdmin(profile.is_admin === true || isKnownAdmin)
+
+        if (isKnownAdmin && !profile.is_admin) {
+          await supabase.from('profiles').update({ is_admin: true }).eq('id', user.id)
+        }
+      } else {
+        // Auto-create row in profiles table if it doesn't exist
+        const { data: newProfile } = await supabase
+          .from('profiles')
+          .upsert({
+            id: user.id,
+            full_name: metaName || 'User',
+            avatar_url: metaAvatar || '',
+            is_admin: isKnownAdmin,
+            updated_at: new Date().toISOString()
+          })
+          .select()
+          .maybeSingle()
+
+        if (newProfile) {
+          setFullName(newProfile.full_name || metaName || '')
+          setAvatarUrl(newProfile.avatar_url || metaAvatar || '')
+          setIsAdmin(newProfile.is_admin === true || isKnownAdmin)
+        } else if (isKnownAdmin) {
+          setIsAdmin(true)
+        }
       }
 
       // Check MFA Enrollment status
@@ -110,21 +147,38 @@ export default function ProfilePage() {
 
     setIsSavingProfile(true)
     try {
-      const { error } = await supabase
+      // Update Supabase Auth metadata
+      await supabase.auth.updateUser({
+        data: { full_name: fullName.trim() }
+      })
+
+      // Upsert into profiles table
+      const { error: upsertErr } = await supabase
         .from('profiles')
         .upsert({
           id: userId,
           full_name: fullName.trim(),
-          avatar_url: avatarUrl,
+          avatar_url: avatarUrl || null,
           updated_at: new Date().toISOString()
         })
 
-      if (error) throw error
+      if (upsertErr) {
+        // Fallback update query
+        await supabase
+          .from('profiles')
+          .update({
+            full_name: fullName.trim(),
+            avatar_url: avatarUrl || null,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', userId)
+      }
+
       toast.success('Profile name updated successfully.')
       router.refresh()
     } catch (err: any) {
-      toast.error('Failed to update profile name.')
-      console.warn(err)
+      console.error('Failed to update profile name:', err)
+      toast.error(err.message || 'Failed to update profile name.')
     } finally {
       setIsSavingProfile(false)
     }
@@ -358,8 +412,19 @@ export default function ProfilePage() {
                   )}
                 </Button>
                 <div className="text-[10px] text-muted-foreground leading-normal">
-                  Supports PNG, JPG, or WEBP up to 2MB.
+                  Recommended size 400x400. JPG, PNG or WEBP formats.
                 </div>
+
+                {isAdmin && (
+                  <div className="w-full pt-2 border-t border-border mt-2">
+                    <Link href="/dashboard/admin" className="w-full">
+                      <Button variant="outline" size="sm" className="w-full text-xs font-semibold gap-2 bg-primary/10 hover:bg-primary/20 text-primary border-primary/20">
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                        Open Admin Portal
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </Card>
             </div>
 

@@ -50,6 +50,29 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // Strict Admin Guard for /dashboard/admin
+  if (
+    user &&
+    request.nextUrl.pathname.startsWith('/dashboard/admin')
+  ) {
+    const adminEmails = ['abdshk28@gmail.com', 'abdullahlmao933@gmail.com']
+    const isEmailAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+
+    if (!isEmailAdmin) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .maybeSingle()
+
+      if (!profile?.is_admin) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/dashboard'
+        return NextResponse.redirect(url)
+      }
+    }
+  }
+
   // If there is a user and they visit login, redirect them to dashboard
   if (
     user &&

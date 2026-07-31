@@ -9,16 +9,44 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
+    
     if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host')
-      const isLocalEnv = process.env.NODE_ENV === 'development'
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      } else {
+      // Automatically sync Google / OAuth metadata (name & profile photo) into profiles table
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          const metaName = user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.preferred_username || user.email?.split('@')[0]
+          const metaAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || ''
+
+          const { data: existing } = await supabase
+            .from('profiles')
+            .select('full_name, avatar_url')
+            .eq('id', user.id)
+            .maybeSingle()
+
+          await supabase.from('profiles').upsert({
+            id: user.id,
+            full_name: existing?.full_name || metaName || 'User',
+            avatar_url: existing?.avatar_url || metaAvatar || '',
+            updated_at: new Date().toISOString()
+          })
+        }
+      } catch (syncErr) {
+        console.warn('OAuth metadata sync notice:', syncErr)
+      }
+
+      // Check if request is on localhost to ensure local dev stays on localhost
+      const host = request.headers.get('host') || ''
+      if (host.includes('localhost') || origin.includes('localhost')) {
         return NextResponse.redirect(`${origin}${next}`)
       }
+
+      const forwardedHost = request.headers.get('x-forwarded-host')
+      if (forwardedHost && !forwardedHost.includes('localhost')) {
+        return NextResponse.redirect(`https://${forwardedHost}${next}`)
+      }
+
+      return NextResponse.redirect(`${origin}${next}`)
     }
   }
 
