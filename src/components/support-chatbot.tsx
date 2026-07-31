@@ -361,7 +361,7 @@ export function SupportChatbot() {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-              className="flex-1 bg-muted/60 border border-border rounded-xl px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:border-primary transition-colors"
+              className="flex-1 bg-muted/60 border border-border rounded-xl px-3 py-2 text-base sm:text-xs text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:border-primary transition-colors"
             />
             <Button
               size="icon"

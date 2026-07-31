@@ -553,7 +553,7 @@ function DashboardContent() {
           placeholder="Search meetings..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-background border-input focus-visible:ring-primary pl-10 text-xs h-9 text-foreground placeholder:text-muted-foreground"
+          className="bg-background border-input focus-visible:ring-primary pl-10 text-base sm:text-xs h-9 text-foreground placeholder:text-muted-foreground"
         />
       </div>
 
