@@ -1,8 +1,12 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Navbar } from '@/components/navbar'
+import { PaymentModal, PlanDetails } from '@/components/payment-modal'
+import { SupportChatbot } from '@/components/support-chatbot'
 import {
   ArrowRight,
   Calendar,
@@ -20,8 +24,17 @@ import {
 } from 'lucide-react'
 
 export default function LandingPage() {
+  const [selectedPlan, setSelectedPlan] = useState<PlanDetails | null>(null)
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [isAnnual, setIsAnnual] = useState(false)
+
+  const handleOpenPayment = (plan: PlanDetails) => {
+    setSelectedPlan(plan)
+    setIsPaymentModalOpen(true)
+  }
+
   return (
-    <div className="flex-1 flex flex-col bg-transparent bg-app-wallpaper text-foreground relative overflow-hidden min-h-screen z-10">
+    <div className="flex-1 flex flex-col bg-transparent bg-app-wallpaper text-foreground relative overflow-x-clip min-h-screen z-10">
       {/* Decorative gradient glow elements */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0" />
       <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none z-0" />
@@ -370,6 +383,228 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* PRICING SECTION */}
+      <section id="pricing" className="border-t border-border/80 py-20 z-10 bg-card/60 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 space-y-10">
+          <div className="text-center md:text-left space-y-3">
+            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20">Flexible Plans</Badge>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">Simple, Transparent Pricing</h2>
+            <p className="text-sm text-muted-foreground max-w-lg leading-relaxed">
+              Choose the plan that fits your workflow — from individual meeting recap tools to full team automation.
+            </p>
+
+            {/* Interactive Billing Cycle Toggle */}
+            <div className="pt-2 flex items-center justify-start gap-3 text-xs font-semibold">
+              <span className={!isAnnual ? "text-foreground font-bold" : "text-muted-foreground"}>Monthly</span>
+              <button
+                type="button"
+                onClick={() => setIsAnnual(!isAnnual)}
+                className="relative inline-flex h-6 w-11 items-center rounded-full bg-muted border border-border transition-colors focus:outline-hidden cursor-pointer"
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-primary transition-transform ${
+                    isAnnual ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+              <span className={isAnnual ? "text-foreground font-bold flex items-center gap-1.5" : "text-muted-foreground flex items-center gap-1.5"}>
+                <span>Annual</span>
+                <span className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full animate-pulse">
+                  Save 20%
+                </span>
+              </span>
+            </div>
+          </div>
+
+          {/* Pricing Cards Grid (3 Columns on Desktop, Stacked on Mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch text-left">
+            {/* Free Tier */}
+            <div className="relative rounded-2xl border border-border bg-card/90 p-6 sm:p-8 flex flex-col justify-between shadow-lg hover:-translate-y-2.5 hover:shadow-xl hover:border-primary/40 transition-all duration-300 group">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-foreground">Free</h3>
+                  <p className="text-xs text-muted-foreground">Basic functionalities for individuals testing AI transcript extraction.</p>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl sm:text-5xl font-black text-foreground">$0</span>
+                  <span className="text-xs font-semibold text-muted-foreground">{isAnnual ? '/ year' : '/ month'}</span>
+                </div>
+
+                <div className="border-t border-border/80 pt-6 space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Included Features</div>
+                  <ul className="space-y-2.5 text-xs text-foreground/90 font-medium">
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>5 meeting transcript extractions / mo</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Up to 1,000 words per transcript</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Standard CSV file exports</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Interactive Kanban view</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Community support</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Link href="/login">
+                  <Button variant="outline" className="w-full border-border bg-background hover:bg-accent text-foreground font-semibold py-5 rounded-xl text-sm transition-all cursor-pointer">
+                    Get Started Free
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Pro Tier (Highlighted / Most Popular with Smooth Card Hover Lift) */}
+            <div className="relative rounded-2xl border-2 border-red-500/40 bg-card p-6 sm:p-8 flex flex-col justify-between shadow-xl md:-translate-y-2 hover:-translate-y-4 hover:shadow-2xl hover:shadow-red-500/10 hover:border-red-500/70 transition-all duration-300 group">
+              {/* Unclipped Most Popular Badge - Solid Opaque Background to hide border line */}
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20">
+                <Badge className="bg-card text-red-600 dark:text-red-400 border border-red-500/40 font-extrabold text-[10px] uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm whitespace-nowrap">
+                  Most Popular
+                </Badge>
+              </div>
+
+              <div className="space-y-6 relative z-10">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-foreground flex items-center justify-between">
+                    <span>Pro</span>
+                    <span className="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20">Advanced</span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">Advanced functionalities for professionals, managers, and busy teams.</p>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl sm:text-5xl font-black text-foreground">
+                    {isAnnual ? '$14' : '$17'}
+                  </span>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    {isAnnual ? '/ month (billed yearly)' : '/ month'}
+                  </span>
+                </div>
+
+                <div className="border-t border-border/80 pt-6 space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-400">Everything in Free, plus</div>
+                  <ul className="space-y-2.5 text-xs text-foreground/90 font-medium">
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span className="font-bold text-foreground">Unlimited transcript extractions</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Up to 10,000 words per transcript</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Smart assignee & due date detection</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>CSV & Markdown (.md) exports</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Full Drag & Drop Kanban workspace</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Priority email & live chat support</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="pt-8 relative z-10">
+                <Button
+                  onClick={() => handleOpenPayment({
+                    id: 'pro',
+                    name: 'Pro',
+                    price: isAnnual ? '$168.00' : '$17.00',
+                    period: isAnnual ? '/ year' : '/ month',
+                    description: 'Advanced functionalities for professionals, managers, and busy teams.'
+                  })}
+                  className="w-full bg-red-500/15 hover:bg-red-500/25 text-red-600 dark:text-red-400 border border-red-500/30 font-bold py-5 rounded-xl text-sm transition-all gap-2 group cursor-pointer"
+                >
+                  Upgrade to Pro ({isAnnual ? '$14/mo' : '$17/mo'})
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Plus Tier (Enterprise / Team with Smooth Card Hover Lift) */}
+            <div className="relative rounded-2xl border border-border bg-card/90 p-6 sm:p-8 flex flex-col justify-between shadow-lg hover:-translate-y-2.5 hover:shadow-xl hover:border-purple-500/50 transition-all duration-300 group">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-foreground flex items-center justify-between">
+                    <span>Plus</span>
+                    <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">Enterprise</span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">Much more functionalities built for power users and enterprise operations.</p>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl sm:text-5xl font-black text-foreground">
+                    {isAnnual ? '$104' : '$130'}
+                  </span>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    {isAnnual ? '/ month (billed yearly)' : '/ month'}
+                  </span>
+                </div>
+
+                <div className="border-t border-border/80 pt-6 space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Everything in Pro, plus</div>
+                  <ul className="space-y-2.5 text-xs text-foreground/90 font-medium">
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span className="font-bold text-foreground">Unlimited transcript word length</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Automated Zoom, Teams & Meet webhooks</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Custom AI prompt rules & templates</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Multi-user team workspace & roles</span>
+                    </li>
+                    <li className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
+                      <div className="h-4 w-4 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-[10px]">✓</div>
+                      <span>Dedicated Account Manager & 24/7 VIP SLA</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Button
+                  onClick={() => handleOpenPayment({
+                    id: 'plus',
+                    name: 'Plus',
+                    price: isAnnual ? '$1,248.00' : '$130.00',
+                    period: isAnnual ? '/ year' : '/ month',
+                    description: 'Enterprise functionalities for power users and team operations.'
+                  })}
+                  className="w-full bg-purple-500/15 hover:bg-purple-500/25 text-purple-600 dark:text-purple-400 border border-purple-500/30 font-bold py-5 rounded-xl text-sm transition-all cursor-pointer"
+                >
+                  Get Plus Workspace ({isAnnual ? '$104/mo' : '$130/mo'})
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer id="contact" className="border-t border-border/80 bg-card/95 backdrop-blur-md py-12 relative z-10">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-muted-foreground mb-8">
@@ -418,6 +653,16 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Payment & Subscription Modal */}
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        plan={selectedPlan}
+      />
+
+      {/* Floating AI Customer Support Chatbot */}
+      <SupportChatbot />
     </div>
   )
 }

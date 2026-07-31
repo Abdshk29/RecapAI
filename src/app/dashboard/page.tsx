@@ -13,8 +13,10 @@ import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Logo } from '@/components/logo'
+import { SupportChatbot } from '@/components/support-chatbot'
 import { toast } from 'sonner'
 import { 
   Calendar, 
@@ -732,28 +734,39 @@ function DashboardContent() {
 
               {/* Action Toolbar */}
               <div className="flex items-center gap-2 flex-wrap">
-                {/* Export Dropdown */}
-                <div className="relative group">
-                  <Button variant="outline" className="border-border bg-card text-foreground hover:bg-accent gap-2 h-9 text-xs font-semibold">
-                    <Download className="h-3.5 w-3.5" />
-                    Export
-                  </Button>
-                  {/* Dropdown Items */}
-                  <div className="absolute right-0 top-10 bg-popover border border-border rounded-lg shadow-lg py-1.5 w-44 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-30">
-                    <button
-                      onClick={() => exportToCSV(selectedMeeting.title, actionItems)}
-                      className="w-full text-left px-4 py-2 text-xs text-foreground hover:bg-accent transition-colors"
+                {/* Export Dropdown - Mobile & Desktop Touch Friendly */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button variant="outline" className="border-border bg-card text-foreground hover:bg-accent gap-2 h-9 text-xs font-semibold">
+                        <Download className="h-3.5 w-3.5" />
+                        Export
+                      </Button>
+                    }
+                  />
+                  <DropdownMenuContent align="end" className="w-48 bg-popover border border-border shadow-lg p-1">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        exportToCSV(selectedMeeting.title, actionItems)
+                        toast.success('Exporting CSV file...')
+                      }}
+                      className="cursor-pointer text-xs flex items-center justify-between"
                     >
-                      Export CSV
-                    </button>
-                    <button
-                      onClick={() => exportToMarkdown(selectedMeeting, actionItems)}
-                      className="w-full text-left px-4 py-2 text-xs text-foreground hover:bg-accent transition-colors"
+                      <span>Export CSV (.csv)</span>
+                      <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        exportToMarkdown(selectedMeeting, actionItems)
+                        toast.success('Exporting Markdown file...')
+                      }}
+                      className="cursor-pointer text-xs flex items-center justify-between"
                     >
-                      Export Markdown (.md)
-                    </button>
-                  </div>
-                </div>
+                      <span>Export Markdown (.md)</span>
+                      <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
                 {/* Add Manual Task Button */}
                 <Button 
@@ -1342,6 +1355,9 @@ function DashboardContent() {
           </Card>
         </div>
       )}
+
+      {/* Floating AI Customer Support Chatbot */}
+      <SupportChatbot />
     </div>
   )
 }
